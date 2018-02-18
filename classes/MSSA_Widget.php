@@ -12,9 +12,15 @@ class MSSA_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'mssa_widget', // Base ID
-			esc_html__( 'MultiSite Satats Aggregator', 'text_domain' ), // Name
+			esc_html__( 'MultiSite Stats Aggregator', 'text_domain' ), // Name
 			array( 'description' => esc_html__( 'Display a widget with counts of various aspects of different multisites.', 'text_domain' ), ) // Args
 		);
+
+		// Register and Enqueue Scripts
+		wp_register_script('mssa-ajax-js', plugins_url( '../js/ajax.js', __FILE__ ), ['jquery'], '0.1.0', true);
+		if( is_active_widget(false, false, $this->id_base, true) ){
+			wp_enqueue_script( 'mssa-ajax-js' );
+		}
 	}
 
 	/**
@@ -34,7 +40,8 @@ class MSSA_Widget extends WP_Widget {
 		if ( ! empty( $sites_info ) ) {
 			$widget .= $this->generate_sites_select( $sites_info );
 		}
-		$widget .= "<div class='multisite_stats' id='multisite_stats'>" . self::mssa_generate_site_stats( get_current_blog_id() ) . "</div>";
+		$stats = json_decode( self::mssa_generate_site_stats( get_current_blog_id() ), true );
+		$widget .= "<div class='mssa_multisite_stats' id='mssa_multisite_stats'>" . $stats['body'] . "</div>";
 		$widget .= $args['after_widget'];
 		echo $widget;
 	}
@@ -69,7 +76,7 @@ class MSSA_Widget extends WP_Widget {
 	 * @return string html select element
 	 */
 	private function generate_sites_select( $sites ) {
-		$select = "<label for='select-site'>Select a site to see its statistics:</label><select name='select-site' id='select_site'>";
+		$select = "<label for='mssa_select_site'>Select a site to see its statistics:</label><select name='mssa_select_site' id='mssa_select_site'>";
 		foreach ( $sites as $site ) {
 			$selected = '';
 			if ( get_current_blog_id() === $site['id'] ) {
@@ -82,6 +89,11 @@ class MSSA_Widget extends WP_Widget {
 		return $select;
 	}
 
+	/**
+	 * @param $site int or WP_REST_Response Object
+	 *
+	 * @return string
+	 */
 	public static function mssa_generate_site_stats( $site ){
 		if( is_numeric( $site ) ){
 			switch_to_blog( $site );
@@ -93,7 +105,10 @@ class MSSA_Widget extends WP_Widget {
 		$categories = "<p class='term_count'>Categories: " . wp_count_terms( 'category' ) . "</p>";
 		$users = "<p class='user_count'>Users: " . count_users()['total_users'] . "</p>";
 		restore_current_blog();
-		return $pages . $posts . $categories . $users;
+
+		return json_encode([
+			'body' => $pages . $posts . $categories . $users
+		]);
 	}
 
 	/**
