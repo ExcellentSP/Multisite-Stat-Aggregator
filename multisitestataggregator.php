@@ -20,9 +20,6 @@ function mssa_register_widget() {
 }
 add_action( 'widgets_init', 'mssa_register_widget' );
 
-// Register and Enqueue Scripts
-wp_register_script('mssa-ajax-js', plugin_dir_path( __FILE__ ) . '/js/ajax.js', ['jquery'], '0.1.0', true);
-
 /*
  * Register Custom Endpoint
  *
