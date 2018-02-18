@@ -12,7 +12,10 @@
  * @package         Multisitestataggregator
  */
 
-require_once( plugin_dir_path( __FILE__ ) . "classes/MSSA_Widget.php" );
+define( 'MSSA_SERVER_PATH', plugin_dir_path( __FILE__ ) );
+define( 'MSSA_JS_PATH', plugins_url( 'js/', __FILE__ ) );
+
+require_once( MSSA_SERVER_PATH . "classes/MSSA_Widget.php" );
 
 // register MSSA_Widget widget
 function mssa_register_widget() {

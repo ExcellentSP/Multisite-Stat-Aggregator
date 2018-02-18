@@ -17,7 +17,7 @@ class MSSA_Widget extends WP_Widget {
 		);
 
 		// Register and Enqueue Scripts
-		wp_register_script('mssa-ajax-js', plugins_url( '../js/ajax.js', __FILE__ ), ['jquery'], '0.1.0', true);
+		wp_register_script('mssa-ajax-js', MSSA_JS_PATH . 'ajax.js', ['jquery'], '0.1.0', true);
 		if( is_active_widget(false, false, $this->id_base, true) ){
 			wp_enqueue_script( 'mssa-ajax-js' );
 		}
