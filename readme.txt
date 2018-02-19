@@ -1,5 +1,5 @@
 === Multisite Stat Aggregator ===
-Contributors: siphon
+Contributors: ExcellentSP
 Tags: posts, ajax, widget
 Requires at least: 4.4
 Tested up to: 4.9.4
