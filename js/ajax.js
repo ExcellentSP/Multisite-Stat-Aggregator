@@ -17,4 +17,6 @@
     var siteSwitch = $( '#mssa_select_site' );
     siteSwitch.on( 'change', ajaxRequest );
 
+    setInterval(ajaxRequest, 60000);
+
 })(jQuery);

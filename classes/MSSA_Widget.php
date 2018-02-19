@@ -100,9 +100,10 @@ class MSSA_Widget extends WP_Widget {
 		}elseif( is_object( $site ) ){
 			switch_to_blog( $site->get_url_params()['id'] );
 		}
+		$term_count = wp_count_terms( 'category' ) ? wp_count_terms( 'category' ) : 0;
 		$pages = "<p class='page_count'>Published Pages: " . wp_count_posts('page')->publish . "</p>";
 		$posts = "<p class='post_count'>Published Posts: " . wp_count_posts()->publish . "</p>";
-		$categories = "<p class='term_count'>Categories: " . wp_count_terms( 'category' ) . "</p>";
+		$categories = "<p class='term_count'>Categories: " . $term_count . "</p>";
 		$users = "<p class='user_count'>Users: " . count_users()['total_users'] . "</p>";
 		restore_current_blog();
 
