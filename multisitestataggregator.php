@@ -7,7 +7,7 @@
  * Author URI:      shanephillips.tech
  * Text Domain:     multisitestataggregator
  * Domain Path:     /languages
- * Version:         0.1.0
+ * Version:         1.0.0
  *
  * @package         Multisitestataggregator
  */
